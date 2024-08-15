@@ -44,36 +44,35 @@ Before you begin, ensure you have met the following requirements:
    git clone https://github.com/your-username/document-chat-assistant.git
    cd document-chat-assistant
 
-```markdown
 2. Create and activate a virtual environment:
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 
 3. Install the required dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 4. Add your OpenAI API key:
 Create a file named `api_key.json` in the root of your project directory and add your OpenAI API key:
 
-```json
-{
-    "openai_api_key": "your-openai-api-key"
-}
-```
+   ```json
+   {
+       "openai_api_key": "your-openai-api-key"
+   }
+   ```
 
 ### Running the Application
 
 1. **Start the Flask application:**
 
-```bash
-python app.py
-```
+   ```bash
+   python app.py
+   ```
 
 2. **Access the application:**
 Open your web browser and navigate to `http://127.0.0.1:5000/` to interact with the Document Chat Assistant.
