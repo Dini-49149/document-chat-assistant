@@ -1,0 +1,10 @@
+openai==0.28
+pypdf 
+requests
+flask
+PyPDF2
+numpy
+faiss-cpu
+langchain
+langchain-openai
+langchain-community
