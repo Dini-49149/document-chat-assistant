@@ -100,4 +100,4 @@ We welcome contributions from the community. Please follow these steps to contri
 
 ### License
 
-This project is licensed under the MIT License. See the `LICENSE
+This project is licensed under the MIT License. See the LICENSE file for details.
