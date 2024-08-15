@@ -10,6 +10,7 @@
 
 ## Folder Structure
 
+```
 document-chat-assistant/
 │
 ├── app.py                   # Main application file containing Flask routes and backend logic
@@ -17,6 +18,7 @@ document-chat-assistant/
 │   └── chat.html            # Frontend interface for chat and file upload
 ├── api_key.json             # OpenAI API key configuration (not in version control)
 └── requirements.txt         # List of Python dependencies
+```
 
 ### Detailed Explanation of Components
 
