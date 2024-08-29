@@ -7,6 +7,7 @@
 - **PDF Upload and Processing**: Users can upload PDF files, which are processed to extract and split the content for efficient querying.
 - **Interactive Chat Interface**: The chatbot interacts with the user, answering questions based on the content of the uploaded PDF files.
 - **Responsive Feedback**: Once files are uploaded, the system provides immediate feedback, and the chatbot is ready to answer queries.
+- **Customizable Text Splitting**: Users can adjust chunk size, chunk overlap, and choose between different text splitting methods to optimize document processing.
 
 ## Folder Structure
 
@@ -26,6 +27,14 @@ document-chat-assistant/
 - **templates/chat.html**: This HTML file defines the frontend of the application. It includes the chat interface and the file upload feature, allowing users to upload PDFs and interact with the chatbot.
 - **api_key.json**: This file contains your OpenAI API key, which is essential for generating embeddings and responses. (Ensure this file is not included in version control for security reasons.)
 - **requirements.txt**: This file lists all the Python dependencies required to run the application. 
+
+### Detailed Explanation of Components
+
+- **app.py**: This is the main Python file that serves as the backend for the application. It handles routing, file uploads, interaction with the LangChain, and FAISS libraries.
+- **templates/chat.html**: This HTML file defines the frontend of the application. It includes the chat interface and the file upload feature, allowing users to upload PDFs and interact with the chatbot. The chat interface includes a settings pop-up where users can customize the text chunking parameters.
+- **api_key.json**: This file contains your OpenAI API key, which is essential for generating embeddings and responses. (Ensure this file is not included in version control for security reasons.)
+- **requirements.txt**: This file lists all the Python dependencies required to run the application.
+- **static/styles.css**: (Optional) Contains custom styles for enhancing the visual appearance of the frontend interface.
 
 ## Getting Started
 
@@ -78,6 +87,7 @@ Create a file named `api_key.json` in the root of your project directory and add
 Open your web browser and navigate to `http://127.0.0.1:5000/` to interact with the Document Chat Assistant.
 
 ### Project Flow
+
 1. **Upload Files**: Users upload one or more PDF files using the web interface.
 2. **Processing**: The uploaded files are processed using LangChain to split the text into chunks. These chunks are then embedded using OpenAI's embeddings.
 3. **Querying**: Users can ask questions in the chat interface. The system retrieves the most relevant chunk from the vector database and generates a response using GPT-3.5-turbo.
@@ -87,6 +97,7 @@ Open your web browser and navigate to `http://127.0.0.1:5000/` to interact with 
 - **Enhanced Document Support**: Expand the document types supported beyond PDFs (e.g., Word, Excel).
 - **Backend Improvements**: Introduce additional backend features such as document management, caching, and performance monitoring.
 - **Deployment**: Package the application with Docker for easier deployment to cloud platforms like AWS, Azure, or Heroku.
+- **OpenAI RAG Strategies**: Implement OpenAI's Retrieval-Augmented Generation (RAG) strategies as described in the [LangChain blog](https://blog.langchain.dev/applying-openai-rag/).
 
 ### Contributing
 
@@ -97,6 +108,16 @@ We welcome contributions from the community. Please follow these steps to contri
 3. Make your changes and commit them (`git commit -am 'Add new feature'`).
 4. Push to your branch (`git push origin feature-branch`).
 5. Open a Pull Request.
+
+#### Featuring OpenAI RAG Strategies
+
+If you're interested in contributing by implementing or enhancing Retrieval-Augmented Generation (RAG) strategies using OpenAI, we encourage you to explore the following:
+
+- **Implementing RAG Strategies**: Refer to the [LangChain blog](https://blog.langchain.dev/applying-openai-rag/) to understand the recommended practices and strategies for applying OpenAI RAG. 
+- **Feature Integration**: After implementing RAG strategies, please ensure that the integration is well-documented within your Pull Request. Explain how the RAG approach is applied and any configuration options you provide.
+- **Testing**: Include tests that demonstrate the effectiveness of the RAG strategies in improving the chatbot’s responses.
+
+By contributing to this aspect, you can help enhance the application’s ability to generate more contextually accurate and informative responses.
 
 ### License
 
