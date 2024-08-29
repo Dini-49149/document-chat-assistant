@@ -78,41 +78,96 @@
         }
         #user-input {
             flex: 1;
-            padding: 12px;
-            font-size: 14px;
+            padding: 14px;
+            font-size: 16px;
             border: 1px solid #ccc;
-            border-radius: 24px;
-            margin-right: 10px;
+            border-radius: 28px;
+            margin-right: 15px;
+        }
+        #send-button, #settings-button {
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 28px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            border: none;
+            color: white;
         }
         #send-button {
-            padding: 12px 24px;
-            font-size: 14px;
             background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
         #send-button:hover {
             background-color: #0056b3;
         }
-        #file-upload {
-            display: none;
-        }
         #upload-label {
-            padding: 12px 24px;
-            font-size: 14px;
+            padding: 14px 28px;
+            font-size: 16px;
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 24px;
+            border-radius: 28px;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 15px;
             transition: background-color 0.3s ease;
         }
         #upload-label:hover {
             background-color: #218838;
+        }
+        #file-upload {
+            display: none;
+        }
+        #settings-button {
+            background-color: #6c757d;
+            margin-left: 15px;
+        }
+        #settings-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Popup Styling */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .popup-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .popup-content input, .popup-content select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .popup-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .popup-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -120,18 +175,72 @@
     <div class="chat-container">
         <div class="chat-messages" id="chat-messages"></div>
         <div class="input-area">
-            <label for="file-upload" id="upload-label"><i class="fas fa-upload"></i> Upload PDF</label>
+            <label for="file-upload" id="upload-label">Upload PDF</label>
             <input id="file-upload" type="file" multiple>
             <input type="text" id="user-input" placeholder="Type your message...">
             <button id="send-button">Send</button>
+            <button id="settings-button">Settings</button>
         </div>
     </div>
+
+    <!-- Popup Window -->
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup-content">
+            <h3>Document Settings</h3>
+            <div>
+                <label for="chunk-size">Chunk Size:</label>
+                <input type="number" id="chunk-size" value="500" min="1">
+            </div>
+            <div>
+                <label for="chunk-overlap">Chunk Overlap:</label>
+                <input type="number" id="chunk-overlap" value="100" min="0">
+            </div>
+            <div>
+                <label for="length-function">Length Function:</label>
+                <select id="length-function">
+                    <option value="token">Tokens</option>
+                    <option value="len">Characters</option>
+                </select>
+            </div>
+            <div>
+                <label for="text-splitter-type">Select a Text Splitter:</label>
+                <select id="text-splitter-type">
+                    <option value="recursive_character">RecursiveCharacter</option>
+                    <option value="character">Character</option>
+                </select>
+            </div>
+            <div class="popup-buttons">
+                <button id="apply-settings">Apply</button>
+                <button id="close-popup">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const chatMessages = document.getElementById('chat-messages');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const fileUpload = document.getElementById('file-upload');
         const uploadLabel = document.getElementById('upload-label');
+        const settingsButton = document.getElementById('settings-button');
+        const popupOverlay = document.getElementById('popup-overlay');
+        const applySettingsButton = document.getElementById('apply-settings');
+        const closePopupButton = document.getElementById('close-popup');
+
+        // Open settings popup
+        settingsButton.addEventListener('click', () => {
+            popupOverlay.style.display = 'flex';
+        });
+
+        // Close settings popup
+        closePopupButton.addEventListener('click', () => {
+            popupOverlay.style.display = 'none';
+        });
+
+        // Apply settings and close popup
+        applySettingsButton.addEventListener('click', () => {
+            popupOverlay.style.display = 'none';
+        });
 
         function addMessage(content, isUser) {
             const messageDiv = document.createElement('div');
@@ -181,17 +290,31 @@
                 for (let i = 0; i < files.length; i++) {
                     formData.append('files', files[i]);
                 }
+                
+                // Get user settings
+                const chunkSize = document.getElementById('chunk-size').value;
+                const chunkOverlap = document.getElementById('chunk-overlap').value;
+                const lengthFunction = document.getElementById('length-function').value;
+                const textSplitterType = document.getElementById('text-splitter-type').value;
+                
+                // Append settings to form data
+                formData.append('chunk_size', chunkSize);
+                formData.append('chunk_overlap', chunkOverlap);
+                formData.append('length_function', lengthFunction);
+                formData.append('text_splitter_type', textSplitterType);
 
                 fetch('/upload', {
                     method: 'POST',
                     body: formData,
                 })
-                .then(response => {
-                    if (response.ok) {
-                        // Change the label text to "Files Uploaded"
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response) {
+                        // Display the response in the chat
+                        addMessage(data.response, false);
                         uploadLabel.textContent = "Files Uploaded";
                     } else {
-                        alert('Failed to upload files');
+                        alert('Failed to process files');
                     }
                 })
                 .catch(error => {
